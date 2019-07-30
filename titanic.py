@@ -73,9 +73,7 @@ df_train = df_train[['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare']]
 scaler = MinMaxScaler()
 x_scaled = scaler.fit_transform(df_train)
 
-# Apply k-means (apply to the scaled dataset)
 kmeans = KMeans(n_clusters=2).fit(x_scaled)
-
 # Add the prediction as a new column
 df_train['survival_prediction'] = kmeans.labels_
 print("#######################################")
@@ -97,3 +95,17 @@ rowcount = df_train['Pclass'].count()
 print("Number of 'rows' in the dataset:     ", rowcount)
 print("Number of 'correct' classified rows: ", correct)
 print("Percentage of correct classified:    ", (correct*1.0)/(rowcount*1.0))
+
+# With this block we can try to find the optimal number of k groups to cluster
+# the data. In case we would not know that 2 is useful (survived and not-survived)
+# we can see when the data changes less for increasing k. This is probably a good 
+# value for k to cluster them.
+# Of course, a closer look to the data or a decision of k because of human
+# domain knowledge makes more sense.
+for k in range(1, 20):
+	# Apply k-means (apply to the scaled dataset)
+	kmeans = KMeans(n_clusters=k).fit(x_scaled)
+	# Print the inertia
+	print(kmeans.inertia_)
+	print("k: %s, cost: %s", k, kmeans.inertia_)
+
