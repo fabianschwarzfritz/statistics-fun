@@ -71,17 +71,29 @@ print(df_train.head())
 
 # Apply the k-means clustering.
 print('### K MEANS')
-
-# We have to drop the survived columnd from the train dataset.
-x = np.array(df_train.drop(['Survived'], 1).astype(float)) # The test data set without 'survived' property
+# Save the survives property for later comparistion
 y = np.array(df_train['Survived']) # the survived property
 
-kmeans = KMeans(n_clusters=2).fit(x)
-print(kmeans.labels_)
-print(kmeans.cluster_centers_)
+# The dataset we want to uese for kmeans
+df_train = df_train[['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare']]
+# df_train = df_train.head(30)
+
+kmeans = KMeans(n_clusters=2).fit(df_train)
+# scaler = MinMaxScaler()
+# x_scaled = scaler.fit_transform(df_train)
+# kmeans.fit(x_scaled)
+# print(kmeans.labels_)
+# print(kmeans.cluster_centers_)
 df_train['survival_prediction'] = kmeans.labels_
-df_train.info()
-print(df_train)
 
-# TODO open question: All the first rows are 1, all the second rows are 0 in regards to survival....
+correct = 0
+for i in df_train.index:
+    expected = df_train['survival_prediction'][i]
+    actual = y[i]
+    if expected == actual:
+        correct += 1
 
+rowcount = df_train['Pclass'].count()
+print("Number of 'rows' in the dataset:     ", rowcount)
+print("Number of 'correct' classified rows: ", correct)
+print("Percentage of correct classified:    ", (correct*1.0)/(rowcount*1.0))
