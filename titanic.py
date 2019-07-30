@@ -5,6 +5,7 @@ import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import silhouette_score
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -102,9 +103,15 @@ print("Percentage of correct classified:    ", (correct*1.0)/(rowcount*1.0))
 # value for k to cluster them.
 # Of course, a closer look to the data or a decision of k because of human
 # domain knowledge makes more sense.
-for k in range(1, 20):
+for k in range(2, 20):
+	print("# {}-means for dataset".format(k))
 	# Apply k-means (apply to the scaled dataset)
-	kmeans = KMeans(n_clusters=k).fit(x_scaled)
+	kmeans = KMeans(n_clusters=k)
+	prediction = kmeans.fit_predict(x_scaled)
+
+	score = silhouette_score(x_scaled, prediction, metric='euclidean')
+	print("For n_clusters = {}, silhouette score is {})".format(k, score))
+
 	# Print the inertia
 	print(kmeans.inertia_)
 	print("k: %s, cost: %s", k, kmeans.inertia_)
