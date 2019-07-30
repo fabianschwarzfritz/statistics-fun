@@ -55,37 +55,37 @@ g2.add_legend()
 
 # Kmeans 
 print('### K-Means')
-print(df_train.head())
-# The features like 'Name', 'Ticket', 'Cabin', 'Embarked' do not have any
-# inpact on the dataset so we should drop them.
-df_train = df_train.drop(['Name', 'Ticket', 'Cabin', 'Embarked'], axis=1)
+#df_train = df_train.head(30)
+
+# Save the survives property for later comparistion
+y = np.array(df_train['Survived']) # the survived property
+
 # The only non-numeric feature is the 'Sex' attribute. We use labels
 # to replace the possible values with numeric values.
 le = LabelEncoder()
 le.fit(df_train['Sex'])
-le.fit(df_test['Sex'])
 df_train['Sex'] = le.transform(df_train['Sex'])
-df_test['Sex'] = le.transform(df_test['Sex'])
-df_train.info()
-print(df_train.head())
 
-# Apply the k-means clustering.
-print('### K MEANS')
-# Save the survives property for later comparistion
-y = np.array(df_train['Survived']) # the survived property
-
-# The dataset we want to uese for kmeans
+# The dataset we want to use for kmeans
 df_train = df_train[['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare']]
-# df_train = df_train.head(30)
 
-kmeans = KMeans(n_clusters=2).fit(df_train)
-# scaler = MinMaxScaler()
-# x_scaled = scaler.fit_transform(df_train)
-# kmeans.fit(x_scaled)
-# print(kmeans.labels_)
-# print(kmeans.cluster_centers_)
+# Scale the values in the dataframe
+scaler = MinMaxScaler()
+x_scaled = scaler.fit_transform(df_train)
+
+# Apply k-means (apply to the scaled dataset)
+kmeans = KMeans(n_clusters=2).fit(x_scaled)
+
+# Add the prediction as a new column
 df_train['survival_prediction'] = kmeans.labels_
+print("#######################################")
+print(kmeans.labels_)
+print(df_train)
+print("#######################################")
 
+# Calculate how much entries in one of the clusters
+# correctly represent the survival count of the 
+# passengers
 correct = 0
 for i in df_train.index:
     expected = df_train['survival_prediction'][i]
