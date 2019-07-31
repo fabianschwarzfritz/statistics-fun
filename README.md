@@ -1,5 +1,7 @@
-# k-means-titanic
-K-means algorithm applied on the titanic dataset
+# Fun with statistics and data
+Featuring:
+ - the survivors of titanic
+ - songs I like on spotify
 
 ## Resource
 Resources used:
