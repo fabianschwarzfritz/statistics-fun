@@ -4,6 +4,8 @@ K-means algorithm applied on the titanic dataset
 ## Resource
 Resources used:
 * Blog article kmeans clustering in python [here](https://www.datacamp.com/community/tutorials/k-means-clustering-python)
+* Spotify audio features [here](https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/)
+* Spotify medium article [discovering music genres](https://medium.com/latinxinai/discovering-descriptive-music-genres-using-k-means-clustering-d19bdea5e443)
 
 ## Todos
 * [ ] Make output printing prettier
