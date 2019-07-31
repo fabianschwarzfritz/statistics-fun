@@ -102,3 +102,7 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Out client id and client secret
+.client.id
+.client.secret
