@@ -103,16 +103,19 @@ print("Percentage of correct classified:    ", (correct*1.0)/(rowcount*1.0))
 # value for k to cluster them.
 # Of course, a closer look to the data or a decision of k because of human
 # domain knowledge makes more sense.
-for k in range(2, 20):
-	print("# {}-means for dataset".format(k))
-	# Apply k-means (apply to the scaled dataset)
-	kmeans = KMeans(n_clusters=k)
-	prediction = kmeans.fit_predict(x_scaled)
+def print_various_k():
+	for k in range(2, 20):
+		print("# {}-means for dataset".format(k))
+		# Apply k-means (apply to the scaled dataset)
+		kmeans = KMeans(n_clusters=k)
+		prediction = kmeans.fit_predict(x_scaled)
 
-	score = silhouette_score(x_scaled, prediction, metric='euclidean')
-	print("For n_clusters = {}, silhouette score is {})".format(k, score))
+		score = silhouette_score(x_scaled, prediction, metric='euclidean')
+		print("For n_clusters = {}, silhouette score is {})".format(k, score))
 
-	# Print the inertia
-	print(kmeans.inertia_)
-	print("k: %s, cost: %s", k, kmeans.inertia_)
+		# Print the inertia
+		print(kmeans.inertia_)
+		print("k: %s, cost: %s", k, kmeans.inertia_)
+
+# print_various_k()
 
