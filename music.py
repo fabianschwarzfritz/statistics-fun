@@ -37,20 +37,25 @@ def audio_features_by(track_ids):
 
   audio_features = spotify.audio_features(tracks=track_ids)
   return pd.DataFrame(data=audio_features)
-  
+
+def dataframe_with_artists(artist_ids):
+  df = pd.DataFrame()
+  counter = 0
+  for id in artist_ids:
+    track_ids = track_ids_from_artist('spotify:artist:' + id)
+    df_artist = audio_features_by(track_ids)
+    df_artist.insert(counter, "Artist", counter)
+    df = df.append(df_artist)
+    counter += 1
+  df = df.reset_index(drop=True)
+  return df
 
 print('**********************************************')
 print('***** All fetched tracks *********************')
 print('**********************************************')
-tracks_led_zeppelin = track_ids_from_artist('spotify:artist:36QJpDe2go2KgaRleHCDTp')
-df_led_zeppelin = audio_features_by(tracks_led_zeppelin)
-df_led_zeppelin.insert(0, "Artist", 0)
+artist_ids = ['36QJpDe2go2KgaRleHCDTp', '1oXiuCd5F0DcnmXH5KaM6N', '3nDNDLcZuSto4k9u4AbcLB']
 
-tracks_kollektiv = track_ids_from_artist('spotify:artist:1oXiuCd5F0DcnmXH5KaM6N')
-df_kollektiv = audio_features_by(tracks_kollektiv)
-df_kollektiv.insert(0, "Artist", 1)
-
-df = pd.concat([df_led_zeppelin, df_kollektiv])
+df = dataframe_with_artists(artist_ids)
 print(df)
 
 print('**********************************************')
