@@ -42,8 +42,15 @@ def audio_features_by(track_ids):
 print('**********************************************')
 print('***** All fetched tracks *********************')
 print('**********************************************')
-tracks = track_ids_from_artist('spotify:artist:36QJpDe2go2KgaRleHCDTp')
-df = audio_features_by(tracks)
+tracks_led_zeppelin = track_ids_from_artist('spotify:artist:36QJpDe2go2KgaRleHCDTp')
+df_led_zeppelin = audio_features_by(tracks_led_zeppelin)
+df_led_zeppelin.insert(0, "Artist", 0)
+
+tracks_kollektiv = track_ids_from_artist('spotify:artist:1oXiuCd5F0DcnmXH5KaM6N')
+df_kollektiv = audio_features_by(tracks_kollektiv)
+df_kollektiv.insert(0, "Artist", 1)
+
+df = pd.concat([df_led_zeppelin, df_kollektiv])
 print(df)
 
 print('**********************************************')
