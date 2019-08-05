@@ -63,6 +63,8 @@ print(df)
 print('**********************************************')
 print('***** Properties used to analyze *************')
 print('**********************************************')
+# All properties that I might be able to use later.
+# df = df[['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'valence', 'tempo']]
 df = df[['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'valence', 'tempo']]
 scaler = MinMaxScaler()
 df[df.columns] = scaler.fit_transform(df[df.columns])
@@ -71,5 +73,5 @@ print('**********************************************')
 print('***** Plot the data **************************')
 print('**********************************************')
 print(df)
-df.T.plot()
+df.T.plot(style='o')
 plt.show()
