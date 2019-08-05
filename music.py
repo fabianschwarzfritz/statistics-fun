@@ -5,9 +5,6 @@ from spotipy.oauth2 import SpotifyClientCredentials
 import pandas as pd
 
 #%matplotlib inline
-print("**************************")
-print("***** Authentication *****")
-print("**************************")
 
 with open('.client.id') as f:
   client_id = f.readline()
@@ -15,36 +12,28 @@ with open('.client.id') as f:
 with open('.client.secret') as f:
   client_secret = f.readline()
 
-client_credentials_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
+def get_spotify_client():
+  client_credentials_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
+  spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
+  return spotify
 
-lz_uri = 'spotify:artist:36QJpDe2go2KgaRleHCDTp'
 
-spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
-results = spotify.artist_top_tracks(lz_uri)
+def track_ids_from_artist(artist_uri):
+  spotify = get_spotify_client()
+  
+  results = spotify.artist_top_tracks(artist_uri)
+  tracks = []
+  for track in results['tracks'][:10]:
+    tracks.append(track['id'])
+  return tracks
 
-for track in results['tracks'][:10]:
-  print('track    : ' + track['name'])
-  print('audio    : ' + track['preview_url'])
-  print('cover art: ' + track['album']['images'][0]['url'])
-  print
+def audio_features_by(track_ids):
+  spotify = get_spotify_client()
 
-print("******************************")
-print("***** Get audio features *****")
-print("******************************")
+  audio_features = spotify.audio_features(tracks=track_ids)
+  return pd.DataFrame(data=audio_features)
+  
 
-tracks = []
-for track in results['tracks'][:10]:
-  tracks.append(track['id'])
-
-print("******************************")
-print("***** Tracks analyzed ********")
-print("******************************")
-print(tracks)
-
-print("*****************************")
-print("***** Audio features ********")
-print("*****************************")
-audio_features = spotify.audio_features(tracks=tracks)
-
-df = pd.DataFrame(data=audio_features)
+tracks = track_ids_from_artist('spotify:artist:36QJpDe2go2KgaRleHCDTp')
+df = audio_features_by(tracks)
 print(df)
