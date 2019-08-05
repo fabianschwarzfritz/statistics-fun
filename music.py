@@ -50,6 +50,24 @@ def dataframe_with_artists(artist_ids):
   df = df.reset_index(drop=True)
   return df
 
+def plot_feature(df, artist_indexes, properties):
+  print('**********************************************')
+  print('***** Plot the data **************************')
+  print('**********************************************')
+  print(df)
+
+  fig, ax = plt.subplots(len(properties), 1)
+
+  property_index = 0
+  for property in properties:
+    for artist_index in artist_indexes:
+      ax[property_index].hist([df.loc[df['Artist'] == artist_index][property]], alpha=0.5, label=artist_index)
+      ax[property_index].set_title(property)
+      ax[property_index].legend()
+    property_index += 1
+  plt.tight_layout()
+  plt.show()
+
 print('**********************************************')
 print('***** All fetched tracks *********************')
 print('**********************************************')
@@ -65,13 +83,8 @@ print('***** Properties used to analyze *************')
 print('**********************************************')
 # All properties that I might be able to use later.
 # df = df[['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'valence', 'tempo']]
-df = df[['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'valence', 'tempo']]
-scaler = MinMaxScaler()
-df[df.columns] = scaler.fit_transform(df[df.columns])
+df = df[['Artist', 'danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'valence', 'tempo']]
+# scaler = MinMaxScaler()
+# df[df.columns] = scaler.fit_transform(df[df.columns])
 
-print('**********************************************')
-print('***** Plot the data **************************')
-print('**********************************************')
-print(df)
-df.T.plot(style='o')
-plt.show()
+plot_feature(df, [0, 1, 2], ['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'valence', 'tempo'])
