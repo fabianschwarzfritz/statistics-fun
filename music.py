@@ -2,7 +2,12 @@
 
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
+
+from sklearn.preprocessing import MinMaxScaler
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 
 #%matplotlib inline
 
@@ -34,6 +39,23 @@ def audio_features_by(track_ids):
   return pd.DataFrame(data=audio_features)
   
 
+print('**********************************************')
+print('***** All fetched tracks *********************')
+print('**********************************************')
 tracks = track_ids_from_artist('spotify:artist:36QJpDe2go2KgaRleHCDTp')
 df = audio_features_by(tracks)
 print(df)
+
+print('**********************************************')
+print('***** Properties used to analyze *************')
+print('**********************************************')
+df = df[['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'valence', 'tempo']]
+scaler = MinMaxScaler()
+df[df.columns] = scaler.fit_transform(df[df.columns])
+
+print('**********************************************')
+print('***** Plot the data **************************')
+print('**********************************************')
+print(df)
+df.T.plot()
+plt.show()
