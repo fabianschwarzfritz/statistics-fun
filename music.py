@@ -53,8 +53,10 @@ def dataframe_with_artists(artist_ids):
 print('**********************************************')
 print('***** All fetched tracks *********************')
 print('**********************************************')
-artist_ids = ['36QJpDe2go2KgaRleHCDTp', '1oXiuCd5F0DcnmXH5KaM6N', '3nDNDLcZuSto4k9u4AbcLB']
-
+lz = '36QJpDe2go2KgaRleHCDTp' # Led Zeppelin
+kt = '1oXiuCd5F0DcnmXH5KaM6N' # Kollektiv Turmstrasse
+mt = '3nDNDLcZuSto4k9u4AbcLB' # Marteria
+artist_ids = [lz, kt, mt]
 df = dataframe_with_artists(artist_ids)
 print(df)
 
