@@ -2,6 +2,7 @@
 
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
+import pandas as pd
 
 #%matplotlib inline
 print("**************************")
@@ -43,5 +44,7 @@ print(tracks)
 print("*****************************")
 print("***** Audio features ********")
 print("*****************************")
-print(spotify.audio_features(tracks=tracks))
+audio_features = spotify.audio_features(tracks=tracks)
 
+df = pd.DataFrame(data=audio_features)
+print(df)
